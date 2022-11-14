@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reactivity</title>
+    
+</head>
+<body>
+    <script type="module">
+        import { Dep, effectWatch } from './index.js';
+        const a = new Dep(0);
+        let b = 0;
+        effectWatch(() => {
+            b = a.value + 10;
+            console.log(b);
+        });
+        a.value = 20;
+        
+    </script>
+</body>
+</html>
