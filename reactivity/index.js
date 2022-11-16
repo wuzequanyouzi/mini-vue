@@ -44,3 +44,48 @@ export function effectWatch(fn) {
     fn();
     currentEffect = null;
 }
+
+const effectMap = new Map();
+
+const getDep = (target, key) => {
+    // 获取对应的依赖列表
+    // target 可能为对象？ 还是必须为对象
+    let deps = effectMap.get(target);
+
+    // 不存在依赖操作者列表，创建
+    if (!deps) {
+        deps = new Map();
+        effectMap.set(target, deps)
+    }
+
+    // 获取对应key的依赖者
+    let dep = deps.get(key)
+    if (!dep) {
+        dep = new Dep();
+    }
+    deps.set(key, dep);
+    return dep;
+}
+
+export function reactive(obj) {
+    return new Proxy(obj, {
+        get(target, key) {
+            let value = Reflect.get(target, key);
+            if (target[key] instanceof Object) {
+                value = reactive(target[key])
+            }
+            const dep = getDep(target, key)
+            // 收集依赖
+            dep.addDeps();
+            return value;
+        },
+
+        set(target, key, value) {
+            const dep = getDep(target, key);
+            const result = Reflect.set(target, key, value);
+            // 数据变化，通知依赖者执行收集的依赖
+            dep.notice();
+            return result;
+        }
+    })
+}

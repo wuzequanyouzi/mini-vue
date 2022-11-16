@@ -9,15 +9,39 @@
 </head>
 <body>
     <script type="module">
-        import { Dep, effectWatch } from './index.js';
-        const a = new Dep(0);
-        let b = 0;
+        import { Dep, effectWatch, reactive } from './index.js';
+        // const a = new Dep(0);
+        // let b = 0;
+        // effectWatch(() => {
+        //     b = a.value + 10;
+        //     console.log(b);
+        // });
+        // a.value = 20;
+        const user = reactive({
+            age: 10,
+            info: {
+                job: 'web'
+            }
+        })
+
+        // effectWatch(() => {
+        //     console.log(user.age, 'A');
+        // })
+
+        // effectWatch(() => {
+        //     console.log(user.age, 'B');
+        // })
+
         effectWatch(() => {
-            b = a.value + 10;
-            console.log(b);
-        });
-        a.value = 20;
-        
+            console.log(user.age, 'C');
+        })
+
+        effectWatch(() => {
+            console.log(user.info.job, 'info');
+        })
+
+        user.age++;
+        user.info.job = 'web3.0';
     </script>
 </body>
 </html>
