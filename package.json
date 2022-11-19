@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/wuzequanyouzi/mini-vue/issues"
   },
-  "homepage": "https://github.com/wuzequanyouzi/mini-vue#readme"
+  "homepage": "https://github.com/wuzequanyouzi/mini-vue#readme",
+  "dependencies": {
+    "@vue/reactivity": "^3.2.45"
+  }
 }
